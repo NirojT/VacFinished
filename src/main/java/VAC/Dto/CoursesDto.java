@@ -2,6 +2,8 @@ package VAC.Dto;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +23,19 @@ public class CoursesDto {
 
 	private String criteria;
 
+	private MultipartFile imageFile;
+
+	private String faculty;
+
+	private MultipartFile logoFile;
+	
+
+	private String imageName;
+	
+	
+	
+	private String logoName;
+
 	// private List<Year1Dto> year1Dto;
 	// private List<Year2Dto> year2Dto;
 	// private List<Year3Dto> year3Dto;
@@ -29,7 +44,7 @@ public class CoursesDto {
 	// private List<Year6Dto> year6Dto;
 	// private List<Year7Dto> year7Dto;
 	private List<SubjectsDto> subjectDto;
-	
+
 	private List<LevelsDto> levelsDtos;
 
 	// public void setYear8Dto(List<Year8Dto> data) {

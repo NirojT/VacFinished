@@ -46,7 +46,7 @@ public class SubjectController {
           }
 
           @DeleteMapping("delete/{id}")
-          public ResponseEntity<?> updateSubject(@RequestBody SubjectsDto subjectsDto, @PathVariable Integer id) {
+          public ResponseEntity<?> updateSubject( @PathVariable Integer id) {
                     HashMap<String, Object> response = new HashMap<>();
                     Boolean deleteSub = this.subjectService.deleteSubjects(id);
                     if (deleteSub) {

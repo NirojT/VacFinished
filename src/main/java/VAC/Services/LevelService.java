@@ -14,5 +14,6 @@ public interface LevelService {
 
      HashMap<String, Object> getAllLevelsId(int id);
      
+     Boolean deleteLevel(int id);
 }
 

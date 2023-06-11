@@ -26,20 +26,16 @@ public class ContactUS {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column
-	@NotBlank
+
 	private String title;
-	@NotBlank
 	private String email;
-	@NotBlank
 	@Lob
     private String content;
-	@NotBlank
 	private String phoneNo;
 	
 
 	
-	private String Name;
+	private String name;
 	
 	
 

@@ -36,7 +36,7 @@ public class NoticeServiceImpl implements NoticeService {
 		return createdUser;
 	}
 
-	@Override
+	@Override 
 	public Boolean createNotice(NoticeDto noticeDto) throws IOException {
 		UID iUid = new UID();
 
@@ -73,12 +73,11 @@ public class NoticeServiceImpl implements NoticeService {
 		notice.setIsActive(false);
 
 		Notice createdNotice = this.noticeRepo.save(notice);
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			Thread.sleep(1500);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
 		if (createdNotice instanceof Notice) {
 			return true;
 		}
@@ -89,7 +88,7 @@ public class NoticeServiceImpl implements NoticeService {
 	// updating notice using dto
 
 	public Boolean updateNotice(String title, String description, String imageName, String noticeDate,
-			MultipartFile file, Integer id)throws IOException {
+			MultipartFile file, Integer id) throws IOException {
 
 		if (file != null) {
 
@@ -111,53 +110,46 @@ public class NoticeServiceImpl implements NoticeService {
 			// Save the file to the server file system
 			String uploadDirectory = System.getProperty("user.dir") + "/src/main/resources/static";
 			Path uploadPath = Paths.get(uploadDirectory);
-		
-				if (!Files.exists(uploadPath)) {
-					Files.createDirectories(uploadPath);
-					
-				}
-			
 
-			
-				Path imagePath = uploadPath.resolve(imageNames);
-				try (InputStream inputStream = file.getInputStream()) {
-					Files.copy(inputStream, imagePath, StandardCopyOption.REPLACE_EXISTING);
-				} catch (IOException e) {
-					throw new RuntimeException("Failed to store file " + originalFilename, e);
-				}// Save the Notice in the database
+			if (!Files.exists(uploadPath)) {
+				Files.createDirectories(uploadPath);
 
-				Notice updateNotice = this.noticeRepo.findById(id)
-						.orElseThrow(() -> new ResourceNotFound("Notice", "Notice id", id));
-				
-				
-				
-				String deletePhoto = updateNotice.getImageName().replace("http://localhost:9191", "");
-				System.out.println(deletePhoto);
-				Path filePath = Paths.get(uploadDirectory, deletePhoto);
-				Files.deleteIfExists(filePath);
+			}
 
-				
-				
+			Path imagePath = uploadPath.resolve(imageNames);
+			try (InputStream inputStream = file.getInputStream()) {
+				Files.copy(inputStream, imagePath, StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e) {
+				throw new RuntimeException("Failed to store file " + originalFilename, e);
+			} // Save the Notice in the database
 
-				updateNotice.setTitle(title);
-				updateNotice.setNoticeDate(noticeDate);
+			Notice updateNotice = this.noticeRepo.findById(id)
+					.orElseThrow(() -> new ResourceNotFound("Notice", "Notice id", id));
 
-				updateNotice.setDescription(description);
-				updateNotice.setImageName("http://localhost:9191/" + imageNames);
-				updateNotice.setIsActive(false);
+			String deletePhoto = updateNotice.getImageName().replace("http://localhost:9191", "");
+			System.out.println(deletePhoto);
+			Path filePath = Paths.get(uploadDirectory, deletePhoto);
+			Files.deleteIfExists(filePath);
 
-				Notice notice = this.noticeRepo.save(updateNotice);
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				if (notice instanceof Notice) {
-					return true;
-				}
-				return false;
-			
+			updateNotice.setTitle(title);
+			updateNotice.setNoticeDate(noticeDate);
+
+			updateNotice.setDescription(description);
+			updateNotice.setImageName("http://localhost:9191/" + imageNames);
+			updateNotice.setIsActive(false);
+
+			Notice notice = this.noticeRepo.save(updateNotice);
+//			try {
+//				Thread.sleep(1500);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			if (notice instanceof Notice) {
+				return true;
+			}
+			return false;
+
 		} else {
 			try {
 				Notice updateNotice = this.noticeRepo.findById(id)

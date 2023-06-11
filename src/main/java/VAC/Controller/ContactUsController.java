@@ -26,9 +26,9 @@ import VAC.Services.ContactUsService;
 @RequestMapping("api/contact")
 @CrossOrigin(origins = {"http://127.0.0.1:5173/", "http://localhost:5173/"}, allowCredentials = "true")
 public class ContactUsController {
-	
 	@Autowired
 	public ContactUsService contactUsService;
+
 	
 	
 	
@@ -62,7 +62,7 @@ public class ContactUsController {
 			
 			if(allContacts.isEmpty()) {
 				response.put("message", "no contacts are fetched..");
-				response.put("status", 400);
+				response.put("status", 200);
 				return ResponseEntity.status(200).body(response);
 			}
 			response.put("contacts", allContacts);

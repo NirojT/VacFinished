@@ -8,12 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import VAC.Dto.CoursesDto;
 import VAC.Services.CourseRelatedServices;
@@ -27,7 +30,7 @@ public class CourseController {
 	private CourseRelatedServices courseRelatedServices;
 
 	@PostMapping("create")
-	public ResponseEntity<?> createCourses(@RequestBody CoursesDto coursesDto) {
+	public ResponseEntity<?> createCourses(@ModelAttribute CoursesDto coursesDto) {
 		HashMap<String, Object> response = new HashMap<>();
 		Boolean createCourseRelated = this.courseRelatedServices.createCourseRelated(coursesDto);
 
@@ -46,9 +49,29 @@ public class CourseController {
 	}
 
 	@PutMapping("update/{id}")
-	public ResponseEntity<?> updateCourses(@RequestBody CoursesDto coursesDto, @PathVariable int id) {
+	public ResponseEntity<?> updateCourses(
+			@RequestParam String title,
+			@RequestParam String description ,
+			@RequestParam String tagline ,
+			@RequestParam String duration ,
+			
+			@RequestParam String criteria ,
+			@RequestParam String imageName ,
+			@RequestParam String logoName ,
+			@RequestParam String faculty ,
+			
+			@RequestParam(required = false) MultipartFile logoFile,
+			 @RequestParam( required = false) MultipartFile imageFile,
+			@PathVariable Integer id) throws Exception {
+		
+		
+		
+		
+		
 		HashMap<String, Object> response = new HashMap<>();
-		Boolean updateCourseRelated = this.courseRelatedServices.updateCourseRelated(coursesDto, id);
+		Boolean updateCourseRelated = this.courseRelatedServices.updateCourse(title, description, tagline, duration,criteria, imageName, logoName, faculty, logoFile, imageFile, id);
+				
+				
 		if (updateCourseRelated) {
 
 			response.put("message", "Course updated successfully...");
@@ -119,6 +142,25 @@ public class CourseController {
 		return ResponseEntity.status(200).body(response);
 		//
 
+	}
+	@GetMapping("get-only/{id}")
+	public ResponseEntity<?> getCoursesOnlyByIdYear1(@PathVariable("id") Integer ids) {
+		HashMap<String, Object> response = new HashMap<>();
+		HashMap<String, Object> allCourseRelatedByIdDto = this.courseRelatedServices
+				.getAllCourseOnlyByIdYear(ids);
+		
+		if (allCourseRelatedByIdDto == null) {
+			
+			response.put("coursesRelated", "course didnot found...");
+			response.put("status", 400);
+			return ResponseEntity.status(200).body(response);
+		}
+		
+		response.put("coursesRelated", allCourseRelatedByIdDto);
+		response.put("status", 200);
+		return ResponseEntity.status(200).body(response);
+		//
+		
 	}
 
 	// end

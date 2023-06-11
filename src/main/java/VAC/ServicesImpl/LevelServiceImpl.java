@@ -9,9 +9,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import VAC.Dto.CoursesDto;
 import VAC.Dto.LevelsDto;
 import VAC.Entity.Courses;
 import VAC.Entity.Levels;
+import VAC.Entity.Subjects;
 import VAC.ErrorHandler.ResourceNotFound;
 import VAC.Reposiotery.CourseRelatedRepo;
 import VAC.Reposiotery.LevelRepo;
@@ -69,10 +71,12 @@ public  class LevelServiceImpl implements LevelService {
 					.orElseThrow(() -> new ResourceNotFound("Levels", "Levels Id", id));
 			HashMap<String, Object> data = new HashMap<>();
 
-			int id2 = levelByid.getCourses().getId();
+			 Courses courses = levelByid.getCourses();
+			 CoursesDto map = this.mapper.map(courses, CoursesDto.class);
+			 
 
 			LevelsDto levelsDto = this.mapper.map(levelByid, LevelsDto.class);
-			levelsDto.setCoursesDto(id2);
+			levelsDto.setCourses(map);
 			if (levelByid != null) {
 				data.put("Level", levelsDto);
 				return data;
@@ -85,7 +89,20 @@ public  class LevelServiceImpl implements LevelService {
 		}
 		return null;
 	}
-}
+	@Override
+	public Boolean deleteLevel(int id) {
+		Levels level = this.levelRepo.findById(id)
+				.orElseThrow(() -> new ResourceNotFound("level", "level id", id));
+		this.levelRepo.delete(level);
+		Optional<Levels> levels = this.levelRepo.findById(id);
+		if (levels.isPresent()) {
+			return false;
+
+		}
+		return true;
+	}
+	}
+
 
 	
 	

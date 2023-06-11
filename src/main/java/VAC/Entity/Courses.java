@@ -43,6 +43,12 @@ public class Courses {
 
 	@Column(columnDefinition = "VARCHAR(1000)")
 	private String criteria;
+	
+	private String imageName;
+	
+	private String faculty;
+	
+	private String logoName;
 
 	
 

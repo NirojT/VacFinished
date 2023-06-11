@@ -75,12 +75,12 @@ public class EventServiceImpl implements EventService {
 			event.setEventDate(eventDto.getEventDate());
 
 			Object createdEvent = this.eventRepo.save(event);
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			try {
+//				Thread.sleep(1500);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 
 			if (createdEvent instanceof Event) {
 				return true;
@@ -151,12 +151,12 @@ public class EventServiceImpl implements EventService {
 				eventU.setIsActive(false);
 
 				Event updatedEvent = this.eventRepo.save(eventU);
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+//				try {
+//					Thread.sleep(1500);
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 
 				if (updatedEvent instanceof Event) {
 

@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -73,5 +74,23 @@ public class LevelController {
 		response.put("status", 200);
 		return ResponseEntity.status(200).body(response);
 	}
+	
+	@DeleteMapping("delete/{id}")
+    public ResponseEntity<?> updateSubject( @PathVariable Integer id) {
+              HashMap<String, Object> response = new HashMap<>();
+              Boolean deleteLev = this.levelService.deleteLevel(id);
+              if (deleteLev) {
+                        response.put("message", "level deleted successfully");
+                        response.put("status", 200);
+                        return ResponseEntity.status(200).body(response);
+
+              }
+              response.put("message", "level didn't deleted ");
+              response.put("status", 400);
+              return ResponseEntity.status(200).body(response);
+
+    }
+	
+	
 
 }

@@ -1,6 +1,7 @@
 package VAC.Controller;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,8 +15,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import VAC.AllJwt.AuthRequest;
@@ -86,6 +90,62 @@ public class MainUserController {
 			throw new UsernameNotFoundException("invalid user request! ");
 		}
 	}
+	@PutMapping("/update")
+	public ResponseEntity<?> updateAdmin(
+			@RequestParam(required = false) String name,
+			@RequestParam (required = false) String password,
+			@RequestParam (required = false) String email
+			
+			) {
+		try {
+			System.out.println(email);
+			MainUser updateUser = this.mainUserService.updateUser(name, password, email);
+			
+			
+			//creating key value pair using hashmap
+			HashMap<String, Object> response= new HashMap<>();
 
+			response.put("message", "updated successfully");
+			response.put("status", 200);
+			//sending custom response with status and message
+			return  ResponseEntity.status(200).body(response);
+		} catch (Exception e) {
+			HashMap<String, Object> response= new HashMap<>();
+
+			response.put("message", "update fail");
+			response.put("status", 400);
+			//sending custom response with status and message
+			return  ResponseEntity.status(200).body(response);
+		}
+	
+	}
+	
+	
+	
+	
+	
+	//validating token
+	@PostMapping("/validate-token")
+	public ResponseEntity<?> validateToken(@RequestParam String token) {
+	   
+System.out.println(token);
+
+	    boolean isValidToken = this.jwtService.validateLoginToken(token);
+if (isValidToken) {
+	HashMap<String, Object> response = new HashMap<>();
+    response.put("valid", isValidToken);
+    response.put("status", 200);
+
+    return ResponseEntity.status(HttpStatus.OK).body(response);
+}
+	    HashMap<String, Object> response = new HashMap<>();
+	    response.put("valid", isValidToken);
+	    response.put("status", 400);
+
+	    return ResponseEntity.status(200).body(response);
+	}
+	
+	
+	
 	
 }
